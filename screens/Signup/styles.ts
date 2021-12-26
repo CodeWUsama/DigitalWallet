@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 
-const SigninStyles = StyleSheet.create({
+const SignupStyles = StyleSheet.create({
   logoWrapper: {
     alignItems: 'center',
     marginTop: 30,
@@ -23,4 +23,4 @@ const SigninStyles = StyleSheet.create({
   }
 });
 
-export default SigninStyles;
+export default SignupStyles;

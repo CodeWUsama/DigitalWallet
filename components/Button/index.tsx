@@ -7,12 +7,13 @@ const Button: React.FC<ButtonProps> = ({
   mode,
   icon,
   backgroundColor,
+  onPress,
 }) => {
   return (
     <RButton
       icon={icon}
       mode={mode ?? 'contained'}
-      onPress={() => console.log('Pressed')}
+      onPress={onPress}
       labelStyle={{fontSize: 24}}
       style={{
         height: 60,
@@ -37,6 +38,7 @@ interface ButtonProps {
   mode?: Mode;
   backgroundColor?: string;
   icon?: any;
+  onPress?: () => void;
 }
 
 enum Mode {
