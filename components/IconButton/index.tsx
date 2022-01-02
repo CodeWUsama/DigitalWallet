@@ -7,7 +7,7 @@ const IconButton: React.FC<IButtonProps> = ({icon, onPress, size, color}) => {
       icon={icon}
       color={color ?? 'white'}
       size={size ?? 24}
-      onPress={() => console.log('Pressed')}
+      onPress={onPress}
     />
   );
 };

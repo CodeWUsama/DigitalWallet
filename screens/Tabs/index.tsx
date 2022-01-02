@@ -7,7 +7,6 @@ import WalletIcon from '../../assets/Icons/wallet-transparent.png';
 //@ts-ignore
 import HistoryIcon from '../../assets/Icons/history.png';
 import {Colors} from '../../constants';
-import Drawer from '../Drawer';
 
 const Tab = createMaterialBottomTabNavigator();
 

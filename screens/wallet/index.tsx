@@ -8,10 +8,10 @@ import WalletStyles from './styles';
 import GraphImage from './graph.png';
 import {BottomNavigation} from 'react-native-paper';
 
-const Wallet = () => {
+const Wallet: React.FC<any> = ({navigation}) => {
   return (
     <LinearGradiant>
-      <Header title="Wallet" />
+      <Header navigation={navigation} title="Wallet" />
       <View style={WalletStyles.cardsContainer}>
         <View style={GlobalStyles.cardContainer}>
           <Text style={GlobalStyles.textCardHeading}>CASH REMAINING</Text>
