@@ -6,7 +6,6 @@ import GlobalStyles from '../../components/Styles';
 import WalletStyles from './styles';
 //@ts-ignore
 import GraphImage from './graph.png';
-import {BottomNavigation} from 'react-native-paper';
 
 const Wallet: React.FC<any> = ({navigation}) => {
   return (

@@ -17,6 +17,18 @@ const GlobalStyles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
   },
+  textNormalBlack: {
+    color: 'black',
+    fontSize: 16,
+  },
+  textSmall: {
+    color: 'white',
+    fontSize: 13,
+  },
+  textSmallBlack: {
+    color: 'black',
+    fontSize: 13,
+  },
   textCardContent: {
     color: 'black',
     fontSize: 20,
@@ -24,7 +36,7 @@ const GlobalStyles = StyleSheet.create({
   textCardHeading: {
     color: 'black',
     fontSize: 18,
-    opacity:0.75
+    opacity: 0.75,
   },
   rowContainer: {
     display: 'flex',
@@ -34,6 +46,7 @@ const GlobalStyles = StyleSheet.create({
     padding: 20,
     backgroundColor: 'white',
     borderRadius: 5,
+    margin: 20,
   },
 });
 

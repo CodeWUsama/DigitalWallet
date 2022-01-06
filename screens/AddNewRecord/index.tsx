@@ -10,13 +10,11 @@ import styles from './styles';
 import DatePicker from 'react-native-date-picker';
 //@ts-ignore
 import CalendarIcon from '../../assets/Icons/calendar.png';
-import Header from '../../components/Header';
 
 const NewRecord: React.FC<any> = ({navigation}) => {
   const [label, setLabel] = useState('expense');
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
-  console.log(date);
   return (
     <LinearGradiant>
       <HeaderBack title="New Record" navigation={navigation} />

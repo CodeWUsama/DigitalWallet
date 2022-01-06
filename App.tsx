@@ -8,6 +8,7 @@ import Signup from './screens/Signup';
 import Tabs from './screens/Tabs';
 import {Colors} from './constants';
 import NewRecord from './screens/AddNewRecord';
+import Toast from 'react-native-toast-message';
 
 const App = () => {
   const Stack = createNativeStackNavigator();
@@ -24,10 +25,11 @@ const App = () => {
           <Stack.Screen name="Splash" component={SplashScreen} />
           <Stack.Screen name="Signin" component={Signin} />
           <Stack.Screen name="Signup" component={Signup} />
-          <Stack.Screen name="NewRecord" component={NewRecord}/>
-          <Stack.Screen name="Wallet" component={Tabs} />
+          <Stack.Screen name="NewRecord" component={NewRecord} />
+          <Stack.Screen name="Tabs" component={Tabs} />
         </Stack.Navigator>
       </NavigationContainer>
+      <Toast />
     </>
   );
 };

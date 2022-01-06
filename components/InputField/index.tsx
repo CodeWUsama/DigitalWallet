@@ -13,12 +13,14 @@ const InputField: React.FC<InputFieldProps> = ({
   onIconTouch,
   onChange,
   disabled,
+  secureTextEntry,
   onPress,
 }) => {
   return (
     <TextInput
+      secureTextEntry={secureTextEntry}
       onChangeText={onChange}
-      defaultValue={value ?? ''}
+      value={value ?? ''}
       disabled={disabled}
       mode={mode ?? 'flat'}
       onPressIn={onPress}
@@ -52,6 +54,7 @@ interface InputFieldProps {
   onIconTouch?: () => void;
   onPress?: () => void;
   onChange?: (v: string) => void;
+  secureTextEntry?: boolean;
 }
 
 export enum Mode {

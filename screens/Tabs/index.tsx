@@ -7,6 +7,7 @@ import WalletIcon from '../../assets/Icons/wallet-transparent.png';
 //@ts-ignore
 import HistoryIcon from '../../assets/Icons/history.png';
 import {Colors} from '../../constants';
+import History from '../History';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -29,7 +30,7 @@ function Tabs() {
       />
       <Tab.Screen
         name="History"
-        component={Wallet}
+        component={History}
         options={{
           tabBarIcon: () => (
             <Image source={HistoryIcon} style={{height: 25, width: 25}} />
