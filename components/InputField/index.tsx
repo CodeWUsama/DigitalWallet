@@ -10,6 +10,7 @@ const InputField: React.FC<InputFieldProps> = ({
   height,
   value,
   rightIcon,
+  isNumeric,
   onIconTouch,
   onChange,
   disabled,
@@ -21,12 +22,14 @@ const InputField: React.FC<InputFieldProps> = ({
       secureTextEntry={secureTextEntry}
       onChangeText={onChange}
       value={value ?? ''}
+      keyboardType={isNumeric ? 'numeric' : 'default'}
       disabled={disabled}
       mode={mode ?? 'flat'}
       onPressIn={onPress}
       label={label ?? 'Label'}
       placeholder={placeholder}
       multiline={multiline}
+      autoCapitalize={label === 'email' ? 'none' : 'sentences'}
       style={{
         backgroundColor: 'white',
         height: height ?? 60,
@@ -55,6 +58,7 @@ interface InputFieldProps {
   onPress?: () => void;
   onChange?: (v: string) => void;
   secureTextEntry?: boolean;
+  isNumeric?: boolean;
 }
 
 export enum Mode {
