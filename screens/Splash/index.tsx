@@ -19,8 +19,12 @@ const SplashScreen: React.FC<any> = ({navigation}) => {
   useEffect(() => {
     getToken();
     if (token) {
+      AsyncStorage.removeItem('token');
       validateToken(token);
-    }
+    } else
+      setTimeout(() => {
+        navigation.navigate('Signin');
+      }, 2000);
   }, [token]);
 
   let validateToken = async (token: string) => {
