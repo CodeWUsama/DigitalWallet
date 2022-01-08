@@ -19,8 +19,11 @@ const Wallet: React.FC<any> = ({navigation}) => {
     income: 0,
   });
 
-  useEffect(() => {
-    getData();
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      getData();
+    });
+    return unsubscribe;
   }, []);
 
   let getData = async () => {

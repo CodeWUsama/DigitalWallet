@@ -60,11 +60,8 @@ const Signin: React.FC<any> = ({navigation}) => {
         Toast.show({
           type: 'success',
           text1: res.data.message,
-          text2: 'Redirecting to wallet...',
         });
-        setTimeout(() => {
-          navigation.navigate('Tabs');
-        }, 3000);
+        navigation.navigate('Tabs');
       }
     }
   };

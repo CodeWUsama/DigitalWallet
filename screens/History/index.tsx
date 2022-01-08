@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Image, ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import Header from '../../components/Header';
 import LinearGradiant from '../../components/LinearGradiant';
@@ -8,6 +8,10 @@ import styles from './styles';
 import ArrowUp from '../../assets/Icons/arrow-up.png';
 //@ts-ignore
 import ArrowDown from '../../assets/Icons/arrow-down.png';
+import axios from 'axios';
+import {BaseUrl} from '../../constants';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import moment from 'moment';
 
 const Item: React.FC<ItemProps> = ({type, amount, title, date}) => {
   return type === 'income' ? (
@@ -41,10 +45,30 @@ const Item: React.FC<ItemProps> = ({type, amount, title, date}) => {
 
 const History: React.FC<any> = ({navigation}) => {
   const [selectedTab, setSelectedTab] = useState<string>('week');
+  const [records, setRecords] = useState<any>([]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      getData();
+    });
+    return unsubscribe;
+  }, [navigation]);
+
+  let getData = async () => {
+    let res = await axios.get(BaseUrl + '/wallet/history', {
+      headers: {
+        Authorization: 'Bearer ' + (await AsyncStorage.getItem('token')),
+      },
+    });
+    if (res.data.data) {
+      setRecords(res.data.data);
+    }
+  };
+
   return (
     <LinearGradiant>
       <Header navigation={navigation} title="History" />
-      <View style={GlobalStyles.cardContainer}>
+      <View style={{...GlobalStyles.cardContainer, flex: 1}}>
         <View style={styles.tabsContainer}>
           <TouchableOpacity onPress={() => setSelectedTab('week')}>
             <Text
@@ -78,48 +102,57 @@ const History: React.FC<any> = ({navigation}) => {
           </TouchableOpacity>
         </View>
         <ScrollView style={styles.itemsContainer}>
-          <Item
-            type="income"
-            title="Monthly Salary"
-            date="23 October 2021"
-            amount={2333}
-          />
-          <Item
-            type="expense"
-            title="Monthly Salary"
-            date="23 October 2021"
-            amount={2333}
-          />
-          <Item
-            type="income"
-            title="Monthly Salary"
-            date="23 October 2021"
-            amount={2333}
-          />
-          <Item
-            type="expense"
-            title="Monthly Salary"
-            date="23 October 2021"
-            amount={2333}
-          />
-          <Item
-            type="expense"
-            title="Monthly Salary"
-            date="23 October 2021"
-            amount={2333}
-          />
-          <Item
-            type="income"
-            title="Monthly Salary"
-            date="23 October 2021"
-            amount={2333}
-          />
-          <Item
-            type="expense"
-            title="Monthly Salary"
-            date="23 October 2021"
-            amount={2333}
-          />
+          {selectedTab === 'week' ? (
+            records.weeklyRecords?.map((record: any) => {
+              let date = moment(record.date);
+              let dateF = date.format('dddd, MMMM Do YYYY');
+              return (
+                <Item
+                  key={record._id}
+                  type={record.label}
+                  title={record.title}
+                  date={dateF}
+                  amount={record.amount}
+                />
+              );
+            })
+          ) : (
+            <></>
+          )}
+          {selectedTab === 'month' ? (
+            records.monthlyRecords?.map((record: any) => {
+              let date = moment(record.date);
+              let dateF = date.format('dddd, MMMM Do YYYY');
+              return (
+                <Item
+                  key={record._id}
+                  type={record.label}
+                  title={record.title}
+                  date={dateF}
+                  amount={record.amount}
+                />
+              );
+            })
+          ) : (
+            <></>
+          )}
+          {selectedTab === 'year' ? (
+            records.yearlyRecords?.map((record: any) => {
+              let date = moment(record.date);
+              let dateF = date.format('dddd, MMMM Do YYYY');
+              return (
+                <Item
+                  key={record._id}
+                  type={record.label}
+                  title={record.title}
+                  date={dateF}
+                  amount={record.amount}
+                />
+              );
+            })
+          ) : (
+            <></>
+          )}
         </ScrollView>
       </View>
     </LinearGradiant>

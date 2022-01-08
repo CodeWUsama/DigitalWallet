@@ -9,22 +9,17 @@ import axios from 'axios';
 import {BaseUrl} from '../../constants';
 
 const SplashScreen: React.FC<any> = ({navigation}) => {
-  const [token, setToken] = useState<string>('');
-
-  let getToken = async () => {
-    let t = await AsyncStorage.getItem('token');
-    if (t) setToken(t);
-  };
-
   useEffect(() => {
-    getToken();
-    if (token) {
-      validateToken(token);
-    } else
-      setTimeout(() => {
-        navigation.navigate('Signin');
-      }, 2000);
-  }, [token]);
+    AsyncStorage.getItem('token').then(token => {
+      if (token) {
+        validateToken(token);
+      } else {
+        setTimeout(() => {
+          navigation.navigate('Signin');
+        }, 2000);
+      }
+    });
+  }, []);
 
   let validateToken = async (token: string) => {
     try {
@@ -38,9 +33,11 @@ const SplashScreen: React.FC<any> = ({navigation}) => {
         },
       );
       if (res.data.error) {
+        console.log('Token validation error');
         navigation.navigate('Signin');
         return;
       } else {
+        console.log('Token validation success');
         navigation.navigate('Tabs');
       }
     } catch (e) {

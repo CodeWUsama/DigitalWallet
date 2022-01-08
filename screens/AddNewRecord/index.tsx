@@ -13,10 +13,11 @@ import CalendarIcon from '../../assets/Icons/calendar.png';
 import Toast from 'react-native-toast-message';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {KeyboardContext} from '../../App';
 
 const NewRecord: React.FC<any> = ({navigation}) => {
-  // const [label, setLabel] = useState('expense');
-  // const [date, setDate] = useState(new Date());
+  const keyboardEnabled = useContext(KeyboardContext);
+
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
     label: 'expense',
@@ -70,7 +71,9 @@ const NewRecord: React.FC<any> = ({navigation}) => {
 
   return (
     <LinearGradiant>
-      <HeaderBack title="New Record" navigation={navigation} />
+      <View style={{marginTop: keyboardEnabled ? -50 : 0}}>
+        <HeaderBack title="New Record" navigation={navigation} />
+      </View>
       <KeyboardAvoidingView style={{flex: 1}}>
         <View style={styles.formContainer}>
           <View style={styles.labelsContainer}>
