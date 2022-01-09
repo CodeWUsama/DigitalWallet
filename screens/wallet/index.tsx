@@ -9,6 +9,8 @@ import GraphImage from './graph.png';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BaseUrl} from '../../constants';
+import Dialog from '../../components/Dialog';
+import {Provider, DefaultTheme} from 'react-native-paper';
 
 const Wallet: React.FC<any> = ({navigation}) => {
   const [walletData, setWalletData] = useState({
@@ -37,46 +39,67 @@ const Wallet: React.FC<any> = ({navigation}) => {
     }
   };
 
+  const [dialogShow, setDialogShow] = useState<boolean>(false);
+
+  let handleLogout = () => {
+    AsyncStorage.removeItem('token').then(res => {
+      navigation.navigate('Signin');
+    });
+  };
+
   return (
     <LinearGradiant>
-      <Header navigation={navigation} title="Wallet" />
-      <View style={WalletStyles.cardsContainer}>
-        <View
-          style={{
-            ...GlobalStyles.cardContainer,
-          }}>
-          <Text style={GlobalStyles.textCardHeading}>CASH REMAINING</Text>
-          <Text style={{...GlobalStyles.textCardContent, marginBottom: 15}}>
-            {walletData.cash < 0 ? 0 : walletData.cash} Rs
-          </Text>
+      <Provider theme={DefaultTheme}>
+        <Dialog
+          show={dialogShow}
+          title="Please Confirm"
+          content="Do you really want to logout from wallet?"
+          onConfirm={handleLogout}
+          onCancel={() => setDialogShow(false)}
+        />
+        <Header
+          handleMenuClick={() => setDialogShow(true)}
+          navigation={navigation}
+          title="Wallet"
+        />
+        <View style={WalletStyles.cardsContainer}>
+          <View
+            style={{
+              ...GlobalStyles.cardContainer,
+            }}>
+            <Text style={GlobalStyles.textCardHeading}>CASH REMAINING</Text>
+            <Text style={{...GlobalStyles.textCardContent, marginBottom: 15}}>
+              {walletData.cash < 0 ? 0 : walletData.cash} Rs
+            </Text>
 
-          <Text style={GlobalStyles.textCardHeading}>TOTAL SPENT TODAY</Text>
-          <Text style={{...GlobalStyles.textCardContent, marginBottom: 15}}>
-            {walletData.expenseDay} Rs
-          </Text>
+            <Text style={GlobalStyles.textCardHeading}>TOTAL SPENT TODAY</Text>
+            <Text style={{...GlobalStyles.textCardContent, marginBottom: 15}}>
+              {walletData.expenseDay} Rs
+            </Text>
 
-          <Text style={GlobalStyles.textCardHeading}>
-            TOTAL SPENT THIS WEEK
-          </Text>
-          <Text style={{...GlobalStyles.textCardContent}}>
-            {walletData.expenseWeek} Rs
-          </Text>
+            <Text style={GlobalStyles.textCardHeading}>
+              TOTAL SPENT THIS WEEK
+            </Text>
+            <Text style={{...GlobalStyles.textCardContent}}>
+              {walletData.expenseWeek} Rs
+            </Text>
+          </View>
+
+          <View style={GlobalStyles.cardContainer}>
+            <Text style={GlobalStyles.textCardHeading}>INCOME THIS MONTH</Text>
+            <Text style={{...GlobalStyles.textCardContent, marginBottom: 15}}>
+              {walletData.income} Rs
+            </Text>
+
+            <Text style={GlobalStyles.textCardHeading}>EXPENSE THIS MONTH</Text>
+            <Text style={{...GlobalStyles.textCardContent, marginBottom: 15}}>
+              {walletData.expense} Rs
+            </Text>
+
+            <Image source={GraphImage} style={{height: 135, width: 300}} />
+          </View>
         </View>
-
-        <View style={GlobalStyles.cardContainer}>
-          <Text style={GlobalStyles.textCardHeading}>INCOME THIS MONTH</Text>
-          <Text style={{...GlobalStyles.textCardContent, marginBottom: 15}}>
-            {walletData.income} Rs
-          </Text>
-
-          <Text style={GlobalStyles.textCardHeading}>EXPENSE THIS MONTH</Text>
-          <Text style={{...GlobalStyles.textCardContent, marginBottom: 15}}>
-            {walletData.expense} Rs
-          </Text>
-
-          <Image source={GraphImage} style={{height: 135, width: 300}} />
-        </View>
-      </View>
+      </Provider>
     </LinearGradiant>
   );
 };
