@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Image, Text, View} from 'react-native';
 import Header from '../../components/Header';
 import LinearGradiant from '../../components/LinearGradiant';
@@ -24,7 +24,7 @@ const Wallet: React.FC<any> = ({navigation}) => {
       getData();
     });
     return unsubscribe;
-  }, []);
+  }, [navigation]);
 
   let getData = async () => {
     let res = await axios.get(BaseUrl + '/wallet', {
@@ -41,7 +41,10 @@ const Wallet: React.FC<any> = ({navigation}) => {
     <LinearGradiant>
       <Header navigation={navigation} title="Wallet" />
       <View style={WalletStyles.cardsContainer}>
-        <View style={GlobalStyles.cardContainer}>
+        <View
+          style={{
+            ...GlobalStyles.cardContainer,
+          }}>
           <Text style={GlobalStyles.textCardHeading}>CASH REMAINING</Text>
           <Text style={{...GlobalStyles.textCardContent, marginBottom: 15}}>
             {walletData.cash < 0 ? 0 : walletData.cash} Rs

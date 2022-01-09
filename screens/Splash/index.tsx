@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {Text, View} from 'react-native';
+import React, {useContext, useEffect, useState} from 'react';
+import {Appearance, Text, View} from 'react-native';
 import LinearGradiant from '../../components/LinearGradiant';
 import Logo from '../../components/Logo';
 import GlobalStyles from '../../components/Styles';
