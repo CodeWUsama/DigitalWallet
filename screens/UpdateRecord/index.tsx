@@ -1,8 +1,8 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {KeyboardAvoidingView, Text, TouchableOpacity, View} from 'react-native';
 import Button from '../../components/Button';
 import HeaderBack from '../../components/HeaderBack';
-import InputField, {Mode} from '../../components/InputField';
+import InputField from '../../components/InputField';
 import LinearGradiant from '../../components/LinearGradiant';
 import GlobalStyles from '../../components/Styles';
 import {BaseUrl, Colors} from '../../constants';
@@ -15,17 +15,32 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {KeyboardContext} from '../../App';
 
-const NewRecord: React.FC<any> = ({navigation}) => {
+const UpdateRecord: React.FC<UpdateCompProps> = ({navigation, route}) => {
   const keyboardEnabled = useContext(KeyboardContext);
 
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
+    id: '',
     label: 'expense',
     amount: '',
     title: '',
     date: new Date(),
     description: '',
   });
+
+  let {id, label, description, amount, date, title} = route.params;
+
+  useEffect(() => {
+    let newDate = new Date(date);
+    setFormData({
+      id,
+      title,
+      amount,
+      description,
+      date: newDate,
+      label,
+    });
+  }, []);
 
   let handleSubmit = async () => {
     let empty = false;
@@ -48,7 +63,9 @@ const NewRecord: React.FC<any> = ({navigation}) => {
 
     if (!empty) {
       let toSend = {...formData, amount: Number.parseInt(formData.amount)};
-      let res = await axios.post(BaseUrl + '/wallet', toSend, {
+      //@ts-ignore
+      delete toSend.id;
+      let res = await axios.put(BaseUrl + '/wallet/' + formData.id, toSend, {
         headers: {
           Authorization: 'Bearer ' + (await AsyncStorage.getItem('token')),
         },
@@ -56,22 +73,16 @@ const NewRecord: React.FC<any> = ({navigation}) => {
       if (res.data.error) {
         return Toast.show({
           type: 'error',
-          text1: 'Record Creation Error!',
+          text1: 'Record Update Error!',
           text2: res.data.message,
         });
       } else {
-        setFormData({
-          label: formData.label,
-          amount: '',
-          title: '',
-          date: new Date(),
-          description: '',
-        });
         Toast.show({
           type: 'success',
           text1: 'Success!',
           text2: res.data.message,
         });
+        navigation.navigate('History');
       }
     }
   };
@@ -79,7 +90,7 @@ const NewRecord: React.FC<any> = ({navigation}) => {
   return (
     <LinearGradiant>
       <View style={{marginTop: keyboardEnabled ? -50 : 0}}>
-        <HeaderBack title="New Record" navigation={navigation} />
+        <HeaderBack title="Update Record" navigation={navigation} />
       </View>
       <KeyboardAvoidingView style={{flex: 1}}>
         <View style={styles.formContainer}>
@@ -127,7 +138,7 @@ const NewRecord: React.FC<any> = ({navigation}) => {
           <InputField
             label="Amount (Pkr)*"
             onChange={v => setFormData({...formData, amount: v})}
-            value={formData.amount}
+            value={formData.amount + ''}
             isNumeric
           />
           <InputField
@@ -157,11 +168,16 @@ const NewRecord: React.FC<any> = ({navigation}) => {
             value={formData.description}
             onChange={v => setFormData({...formData, description: v})}
           />
-          <Button onPress={handleSubmit} label="Add new record" />
+          <Button onPress={handleSubmit} label="Update record" />
         </View>
       </KeyboardAvoidingView>
     </LinearGradiant>
   );
 };
 
-export default NewRecord;
+interface UpdateCompProps {
+  navigation: any;
+  route: any;
+}
+
+export default UpdateRecord;

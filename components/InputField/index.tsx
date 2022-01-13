@@ -16,6 +16,7 @@ const InputField: React.FC<InputFieldProps> = ({
   disabled,
   secureTextEntry,
   onPress,
+  maxLength,
 }) => {
   return (
     <TextInput
@@ -29,6 +30,7 @@ const InputField: React.FC<InputFieldProps> = ({
       label={label ?? 'Label'}
       placeholder={placeholder}
       multiline={multiline}
+      maxLength={maxLength}
       autoCapitalize={label === 'email' ? 'none' : 'sentences'}
       style={{
         backgroundColor: 'white',
@@ -59,6 +61,7 @@ interface InputFieldProps {
   onChange?: (v: string) => void;
   secureTextEntry?: boolean;
   isNumeric?: boolean;
+  maxLength?: number;
 }
 
 export enum Mode {

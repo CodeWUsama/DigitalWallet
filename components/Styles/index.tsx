@@ -13,6 +13,11 @@ const GlobalStyles = StyleSheet.create({
     textTransform: 'uppercase',
     fontWeight: 'bold',
   },
+  textMediumBlack: {
+    fontSize: 35,
+    textTransform: 'uppercase',
+    fontWeight: 'bold',
+  },
   textNormal: {
     color: 'white',
     fontSize: 16,
@@ -20,6 +25,11 @@ const GlobalStyles = StyleSheet.create({
   textNormalBlack: {
     color: 'black',
     fontSize: 16,
+  },
+  textNormalBlackBold: {
+    color: 'black',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
   textSmall: {
     color: 'white',

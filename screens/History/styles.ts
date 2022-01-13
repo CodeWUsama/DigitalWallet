@@ -5,6 +5,8 @@ const Styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'space-between',
     flexDirection: 'row',
+    marginLeft: 10,
+    marginRight: 10,
   },
   itemContainer: {
     display: 'flex',
@@ -28,6 +30,12 @@ const Styles = StyleSheet.create({
   leftCont: {
     display: 'flex',
     flexDirection: 'row',
+  },
+  actionsContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: 10,
   },
 });
 
