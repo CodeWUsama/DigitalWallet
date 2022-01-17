@@ -21,6 +21,8 @@ const Wallet: React.FC<any> = ({navigation}) => {
     income: 0,
   });
 
+  const [dialogShow, setDialogShow] = useState<boolean>(false);
+
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       getData();
@@ -38,8 +40,6 @@ const Wallet: React.FC<any> = ({navigation}) => {
       setWalletData(res.data.data);
     }
   };
-
-  const [dialogShow, setDialogShow] = useState<boolean>(false);
 
   let handleLogout = () => {
     AsyncStorage.removeItem('token').then(res => {

@@ -142,6 +142,14 @@ const History: React.FC<any> = ({navigation}) => {
       });
   };
 
+  const [logoutDialog, setLogoutDialog] = useState<boolean>(false);
+
+  let handleLogout = () => {
+    AsyncStorage.removeItem('token').then(res => {
+      navigation.navigate('Signin');
+    });
+  };
+
   return (
     <Provider>
       <Dialog
@@ -154,6 +162,14 @@ const History: React.FC<any> = ({navigation}) => {
           setShowModal(true);
         }}
       />
+      <Dialog
+        show={logoutDialog}
+        title="Please Confirm"
+        content="Do you really want to logout from wallet?"
+        onConfirm={handleLogout}
+        onCancel={() => setLogoutDialog(false)}
+      />
+
       <Modal onClose={() => setShowModal(false)} show={showModal}>
         <>
           <View
@@ -205,7 +221,11 @@ const History: React.FC<any> = ({navigation}) => {
         </>
       </Modal>
       <LinearGradiant>
-        <Header navigation={navigation} title="History" />
+        <Header
+          navigation={navigation}
+          handleMenuClick={() => setLogoutDialog(true)}
+          title="History"
+        />
         <View
           style={{
             ...GlobalStyles.cardContainer,
