@@ -1,5 +1,5 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {Appearance, Text, View} from 'react-native';
+import React, {useContext, useEffect} from 'react';
+import {Text, View} from 'react-native';
 import LinearGradiant from '../../components/LinearGradiant';
 import Logo from '../../components/Logo';
 import GlobalStyles from '../../components/Styles';
@@ -7,16 +7,28 @@ import SplashScreenStyles from './styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {BaseUrl} from '../../constants';
+import Toast from 'react-native-toast-message';
+import NetInfo from '@react-native-community/netinfo';
 
 const SplashScreen: React.FC<any> = ({navigation}) => {
   useEffect(() => {
-    AsyncStorage.getItem('token').then(token => {
-      if (token) {
-        validateToken(token);
+    NetInfo.fetch().then(state => {
+      if (state.isConnected) {
+        AsyncStorage.getItem('token').then(token => {
+          if (token) {
+            validateToken(token);
+          } else {
+            setTimeout(() => {
+              navigation.navigate('Signin');
+            }, 2000);
+          }
+        });
       } else {
-        setTimeout(() => {
-          navigation.navigate('Signin');
-        }, 2000);
+        return Toast.show({
+          type: 'error',
+          text1: 'Internet connection failed!',
+          text2: 'This app requires internet to work.',
+        });
       }
     });
   }, []);

@@ -5,4 +5,4 @@ export const Colors = {
 };
 
 // export const BaseUrl = 'https://dwbackend.herokuapp.com';
-export const BaseUrl = 'http://192.168.0.183:8082';
+export const BaseUrl = 'http://192.168.10.6:8082';

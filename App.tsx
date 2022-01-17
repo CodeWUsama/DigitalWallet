@@ -4,6 +4,7 @@ import {
   Keyboard,
   SafeAreaView,
   StatusBar,
+  Text,
   View,
 } from 'react-native';
 import Signin from './screens/Signin';
@@ -16,11 +17,13 @@ import {Colors} from './constants';
 import NewRecord from './screens/AddNewRecord';
 import Toast from 'react-native-toast-message';
 import UpdateRecord from './screens/UpdateRecord';
+import NetInfo from '@react-native-community/netinfo';
 
 //contexts
 ////////
 export const KeyboardContext = React.createContext({});
 export const ThemeContext = React.createContext({});
+export const InternetContext = React.createContext({});
 
 const App = () => {
   //constants
@@ -32,7 +35,7 @@ const App = () => {
   ////////
   const [keyboardStatus, setKeyboardStatus] = useState<boolean>(false);
   const [theme, setTheme] = useState(colorScheme);
-
+  const [isConnected, setIsConnected] = useState(false);
   //useEffects
   ////////////
   useEffect(() => {
@@ -49,6 +52,9 @@ const App = () => {
     const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
       setKeyboardStatus(false);
     });
+    NetInfo.addEventListener(state => {
+      setIsConnected(state.isConnected ?? false);
+    });
     return () => {
       showSubscription.remove();
       hideSubscription.remove();
@@ -56,26 +62,43 @@ const App = () => {
   }, []);
 
   return (
-    <KeyboardContext.Provider value={keyboardStatus}>
-      <ThemeContext.Provider value={theme ?? ''}>
-        <View style={{backgroundColor: Colors.base}}>
-          <SafeAreaView>
-            <StatusBar backgroundColor={Colors.base} />
-          </SafeAreaView>
-        </View>
-        <NavigationContainer>
-          <Stack.Navigator screenOptions={{headerShown: false}}>
-            <Stack.Screen name="Splash" component={SplashScreen} />
-            <Stack.Screen name="Signin" component={Signin} />
-            <Stack.Screen name="Signup" component={Signup} />
-            <Stack.Screen name="NewRecord" component={NewRecord} />
-            <Stack.Screen name="UpdateRecord" component={UpdateRecord} />
-            <Stack.Screen name="Tabs" component={Tabs} />
-          </Stack.Navigator>
-        </NavigationContainer>
-        <Toast />
-      </ThemeContext.Provider>
-    </KeyboardContext.Provider>
+    <InternetContext.Provider value={isConnected}>
+      <KeyboardContext.Provider value={keyboardStatus}>
+        <ThemeContext.Provider value={theme ?? ''}>
+          <View style={{backgroundColor: Colors.base}}>
+            <SafeAreaView>
+              <StatusBar backgroundColor={Colors.base} />
+            </SafeAreaView>
+          </View>
+          {! isConnected ? (
+            <View style={{backgroundColor: Colors.base}}>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontSize: 14,
+                  fontWeight: 'bold',
+                  color: 'white',
+                }}>
+                Connection failed! This app requires internet connection.
+              </Text>
+            </View>
+          ) : (
+            <></>
+          )}
+          <NavigationContainer>
+            <Stack.Navigator screenOptions={{headerShown: false}}>
+              <Stack.Screen name="Splash" component={SplashScreen} />
+              <Stack.Screen name="Signin" component={Signin} />
+              <Stack.Screen name="Signup" component={Signup} />
+              <Stack.Screen name="NewRecord" component={NewRecord} />
+              <Stack.Screen name="UpdateRecord" component={UpdateRecord} />
+              <Stack.Screen name="Tabs" component={Tabs} />
+            </Stack.Navigator>
+          </NavigationContainer>
+          <Toast />
+        </ThemeContext.Provider>
+      </KeyboardContext.Provider>
+    </InternetContext.Provider>
   );
 };
 
